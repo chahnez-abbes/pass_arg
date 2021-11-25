@@ -4,28 +4,56 @@ void main() {
   runApp(const MyApp());
 }
 
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    MaterialApp(
+    return MaterialApp(
       routes: {
         ExtractArgumentsScreen.routeName: (context) =>
         const ExtractArgumentsScreen(),
       },
-    );
-    return MaterialApp(
-      title: 'Pass arguments to a named route',
-      theme: ThemeData(
+      // Provide a function to handle named routes.
+      // Use this function to identify the named
+      // route being pushed, and create the correct
+      // Screen.
+      onGenerateRoute: (settings) {
+        // If you push the PassArguments route
+        if (settings.name == PassArgumentsScreen.routeName) {
+          // Cast the arguments to the correct
+          // type: ScreenArguments.
+          final args = settings.arguments as ScreenArguments;
 
-        primarySwatch: Colors.deepPurple,
-      ),
-      home: const MyHomePage(title: 'Pass arguments to a named route'),
+          // Then, extract the required data from
+          // the arguments and pass the data to the
+          // correct screen.
+          return MaterialPageRoute(
+            builder: (context) {
+              return PassArgumentsScreen(
+                title: args.title,
+                message: args.message,
+              );
+            },
+          );
+        }
+        // The code only supports
+        // PassArgumentsScreen.routeName right now.
+        // Other values need to be implemented if we
+        // add them. The assertion here will help remind
+        // us of that higher up in the call stack, since
+        // this assertion would otherwise fire somewhere
+        // in the framework.
+        assert(false, 'Need to implement ${settings.name}');
+        return null;
+      },
+
+      home: const MyHomePage(title: 'Navigation with Arguments',),
     );
   }
 }
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
