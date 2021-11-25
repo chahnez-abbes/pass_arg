@@ -10,6 +10,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    MaterialApp(
+      routes: {
+        ExtractArgumentsScreen.routeName: (context) =>
+        const ExtractArgumentsScreen(),
+      },
+    );
     return MaterialApp(
       title: 'Pass arguments to a named route',
       theme: ThemeData(
